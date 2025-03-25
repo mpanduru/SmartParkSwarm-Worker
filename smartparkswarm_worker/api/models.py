@@ -1,20 +1,21 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 
 class ParkingLot(models.Model):
-    uuid = models.UUIDField(unique=True)
+    uuid = models.UUIDField(primary_key=True, unique=True, editable=False, default=uuid.uuid4)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     capacity = models.IntegerField(default=50)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.lot_name
+        return self.name
 
 
 class ParkingSpot(models.Model):
-    uuid = models.UUIDField(unique=True)
+    uuid = uuid = models.UUIDField(primary_key=True, unique=True, editable=False, default=uuid.uuid4)
     lot_uuid = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
     spot_number = models.IntegerField(unique=True)
     is_occupied = models.BooleanField()
@@ -23,8 +24,8 @@ class ParkingSpot(models.Model):
         return self.spot_number
     
 class VehicleEntry(models.Model):
-    uuid = models.UUIDField(unique=True)
-    spot_id = models.ForeignKey(ParkingSpot, on_delete=models.DO_NOTHING)
+    uuid = uuid = models.UUIDField(primary_key=True, unique=True, editable=False, default=uuid.uuid4)
+    spot_uuid = models.ForeignKey(ParkingSpot, on_delete=models.DO_NOTHING)
     license_plate = models.CharField(max_length=10)
     entry_time = models.DateTimeField(auto_now_add=True)
     exit_time = models.DateTimeField(auto_now=False)
